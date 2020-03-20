@@ -1,0 +1,10 @@
+type User {
+  name: String
+  fullName: String
+  doc: String
+  email: String
+}
+
+type Query {
+  allUsers : [User]
+}
