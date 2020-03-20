@@ -46,7 +46,6 @@ public class GraphQLProducer {
 
     private VertxDataFetcher<List<User>> getUsersFetcher() {
 
-        LOGGER.info("######get here");
         return  new VertxDataFetcher<>((env, promises)->{
             User luiz = new User("luiz", "luiz leite", "DOC123", "xp.luiz@gmail.com");
             promises.complete(Arrays.asList(new User[] {luiz}));
