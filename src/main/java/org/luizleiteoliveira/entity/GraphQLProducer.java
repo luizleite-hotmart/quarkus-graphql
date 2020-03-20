@@ -1,5 +1,6 @@
 package org.luizleiteoliveira.entity;
 
+
 import graphql.GraphQL;
 import graphql.schema.GraphQLSchema;
 import graphql.schema.idl.RuntimeWiring;
@@ -8,16 +9,21 @@ import graphql.schema.idl.SchemaParser;
 import graphql.schema.idl.TypeDefinitionRegistry;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
-import io.vertx.ext.web.handler.graphql.VertxDataFetcher;
 import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.Objects;
 import javax.enterprise.inject.Produces;
+import javax.inject.Inject;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
+import org.luizleiteoliveira.entity.fetchers.UserFetcher;
+import org.luizleiteoliveira.entity.rest.UserClient;
 
 public class GraphQLProducer {
 
     private Logger LOGGER = LoggerFactory.getLogger(GraphQLProducer.class);
+
+    @RestClient
+    @Inject
+    private UserClient userClient;
 
     @Produces
     public GraphQL setup() {
@@ -26,8 +32,9 @@ public class GraphQLProducer {
 
         SchemaParser schemaParser = new SchemaParser();
         TypeDefinitionRegistry registry = schemaParser.parse(
-            new InputStreamReader(Thread.currentThread().getContextClassLoader()
-                .getResourceAsStream("META-INF/resources/graphql.schema")));
+            new InputStreamReader(
+                Objects.requireNonNull(Thread.currentThread().getContextClassLoader()
+                    .getResourceAsStream("META-INF/resources/graphql.schema"))));
 
         SchemaGenerator schemaGenerator = new SchemaGenerator();
         GraphQLSchema graphQLSchema = schemaGenerator.makeExecutableSchema(registry, wirings());
@@ -40,16 +47,9 @@ public class GraphQLProducer {
 
         return RuntimeWiring.newRuntimeWiring()
             .type("Query",
-                builder -> builder.dataFetcher("allUsers", getUsersFetcher()))
+                builder -> builder.dataFetcher("allUsers", new UserFetcher(userClient)))
             .build();
     }
 
-    private VertxDataFetcher<List<User>> getUsersFetcher() {
-
-        return  new VertxDataFetcher<>((env, promises)->{
-            User luiz = new User("luiz", "luiz leite", "DOC123", "xp.luiz@gmail.com");
-            promises.complete(Arrays.asList(new User[] {luiz}));
-        });
-    }
 
 }

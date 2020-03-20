@@ -1,8 +1,12 @@
+type Names {
+  first: String
+  last: String
+}
+
+
 type User {
-  name: String
-  fullName: String
-  doc: String
   email: String
+  names: Names
 }
 
 type Query {
