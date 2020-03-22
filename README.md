@@ -226,4 +226,30 @@ public class GraphQLProducer {
 }
 ```
 
-On the `getResourceAsStream()` will receive what is your graphql schema 
+On the `getResourceAsStream()` will receive what is your graphql schema.
+To all calls on `allUsers` he will make a `get` from `UserFetcher`
+
+The last part will be the ROUTES:
+
+```java
+@ApplicationScoped
+public class Routes {
+
+    @Inject
+    GraphQL graphQL;
+
+    public void init(@Observes Router router) {
+
+        boolean enableGraphiQL = true;
+
+        router.route("/graphql")
+            .handler(new GraphQLHandlerImpl(graphQL, new GraphQLHandlerOptions()));
+        router.route("/graphiql/*").handler(
+            GraphiQLHandler.create(new GraphiQLHandlerOptions().setEnabled(enableGraphiQL)));
+    }
+
+}
+```
+
+There are two routes one is the `/graphql` that will be our GraphQL endpoint, and another one will be `/graphiql` 
+that will open a URL `http://localhost:8080/graphiql`
