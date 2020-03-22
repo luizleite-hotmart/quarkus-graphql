@@ -136,10 +136,12 @@ public class User {
 
     private String email;
     private String gender;
-    private Names names;
+    private Names name;
     private String phone;
     private String cell;
     private String nat;
+
+    public User() {}
 
 //    Getters and setters
 
@@ -252,4 +254,27 @@ public class Routes {
 ```
 
 There are two routes one is the `/graphql` that will be our GraphQL endpoint, and another one will be `/graphiql` 
-that will open a URL `http://localhost:8080/graphiql`
+that will open a URL `http://localhost:8080/graphiql/`
+
+And our schema will be like this:
+
+```
+type Names {
+  first: String
+  last: String
+}
+
+
+type User {
+  email: String
+  name: Names
+  gender: String
+  phone: String
+  cell: String
+  nat: String
+}
+
+type Query {
+  allUsers : [User]
+}
+```

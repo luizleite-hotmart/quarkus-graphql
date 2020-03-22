@@ -4,7 +4,7 @@ public class User {
 
     private String email;
     private String gender;
-    private Names names;
+    private Names name;
     private String phone;
     private String cell;
     private String nat;
@@ -27,12 +27,12 @@ public class User {
         this.gender = gender;
     }
 
-    public Names getNames() {
-        return names;
+    public Names getName() {
+        return name;
     }
 
-    public void setNames(Names names) {
-        this.names = names;
+    public void setName(Names name) {
+        this.name = name;
     }
 
     public String getPhone() {

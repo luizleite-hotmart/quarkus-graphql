@@ -6,7 +6,7 @@ type Names {
 
 type User {
   email: String
-  names: Names
+  name: Names
   gender: String
   phone: String
   cell: String
