@@ -6,13 +6,14 @@ import org.luizleiteoliveira.entity.Results;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
 @Path("/api")
 @RegisterRestClient
 public interface UserClient {
 
     @GET
-    @Produces("application/json")
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("/")
     Results getUsers();
 }
