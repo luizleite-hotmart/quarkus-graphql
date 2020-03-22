@@ -6,6 +6,7 @@ import org.luizleiteoliveira.entity.Results;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 @Path("/api")
@@ -15,5 +16,5 @@ public interface UserClient {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/")
-    Results getUsers();
+    Results getUsers(@QueryParam("results") int results);
 }

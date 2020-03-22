@@ -14,5 +14,5 @@ type User {
 }
 
 type Query {
-  allUsers : [User]
+  allUsers(results: Int) : [User]
 }
