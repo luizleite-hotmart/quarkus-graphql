@@ -4,14 +4,14 @@ This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
 If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
 
-## Running the application in dev mode
+### Running the application in dev mode
 
 You can run your application in dev mode that enables live coding using:
 ```
 ./mvnw quarkus:dev
 ```
 
-## Packaging and running the application
+### Packaging and running the application
 
 The application can be packaged using `./mvnw package`.
 It produces the `graphql-example-1.0.0-SNAPSHOT-runner.jar` file in the `/target` directory.
@@ -19,7 +19,7 @@ Be aware that it’s not an _über-jar_ as the dependencies are copied into the 
 
 The application is now runnable using `java -jar target/graphql-example-1.0.0-SNAPSHOT-runner.jar`.
 
-## Creating a native executable
+### Creating a native executable
 
 You can create a native executable using: `./mvnw package -Pnative`.
 
@@ -29,11 +29,11 @@ You can then execute your native executable with: `./target/graphql-example-1.0.
 
 If you want to learn more about building native executables, please consult https://quarkus.io/guides/building-native-image-guide.
 
-# The project 
+## The project 
 
 This project will get the API that exist in  [randomuser.me](https://randomuser.me) and put all in a GraphQL.
 
-## The call from randomuser.me
+### The call from randomuser.me
 
 For the following call:
 
@@ -114,9 +114,9 @@ you will receive as result:
 
 you can pass to the API the query parameter `results` that will retrieve to you the number of results you want  
 
-# GRAPHQL On Quarkus
+## GRAPHQL On Quarkus
 
-## Dependencies 
+### Dependencies 
 
 To use GraphQL on quarkus you will need the following dependency provided by  [Vert.x](https://vertx.io/), full doc from the 
 GraphQL part you can find [here](https://vertx.io/docs/vertx-web-graphql/java/)
@@ -128,7 +128,7 @@ GraphQL part you can find [here](https://vertx.io/docs/vertx-web-graphql/java/)
     </dependency>
 ```
 
-## Code part
+### Code part
 First you will need to create a entity User to receive the results, for my example will be like this:
 
 ```java
@@ -277,4 +277,31 @@ type User {
 type Query {
   allUsers : [User]
 }
+```
+
+## Rest client on Quarkus
+To test deeply the Quarkus and this GraphQL we will use the rest client.
+
+### The dependencies we need will be 
+One of them is just to help with the json part, the other part will help us with the rest part.
+```xml
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-resteasy-jsonb</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-rest-client</artifactId>
+    </dependency>
+```
+Inside our application properties you the URI from that we want to call, in our case will be like this:
+```properties
+org.luizleiteoliveira.entity.rest.UserClient/mp-rest/uri = https://randomuser.me
+```
+on the key part you will call the class that will be used as client , `UserClient`, as value the URI that we will use `https://randomuser.me`
+
+After this we just need to declare our client class:
+
+```java
+
 ```
