@@ -129,4 +129,57 @@ GraphQL part you can find [here](https://vertx.io/docs/vertx-web-graphql/java/)
 ```
 
 ## Code part
-First you will need to create a entity User to receive the results
+First you will need to create a entity User to receive the results, for my example will be like this:
+
+```java
+public class User {
+
+    private String email;
+    private String gender;
+    private Names names;
+    private String phone;
+    private String cell;
+    private String nat;
+
+//    Getters and setters
+
+}
+```
+
+And the class names will be an  implementation for the names part will be something like you can see:
+
+```java
+public class Names {
+
+    private String title;
+    private String first;
+    private String last;
+    
+//    Getters and Setters
+
+}
+```
+
+For the model you need Fetcher that will be a model to use our entities, our UserFetcher will be something like this:
+
+
+```java
+public class UserFetcher implements DataFetcher<List<User>> {
+
+    private final UserClient userClient;
+
+    public UserFetcher(UserClient userClient) {
+        this.userClient = userClient;
+    }
+
+
+    private Results getResult() {
+        return userClient.getUsers();
+    }
+
+    @Override
+    public List<User> get(DataFetchingEnvironment environment) throws Exception {
+        return getResult().getResults();
+    }
+}
+``` 
