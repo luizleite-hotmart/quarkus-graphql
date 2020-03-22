@@ -183,3 +183,47 @@ public class UserFetcher implements DataFetcher<List<User>> {
     }
 }
 ``` 
+
+To get our result will need to get a GraphQL producer is a little boilerplate and for your projects will be a class
+that produces :
+
+```java
+public class GraphQLProducer {
+
+    private Logger LOGGER = LoggerFactory.getLogger(GraphQLProducer.class);
+
+    @RestClient
+    @Inject
+    private UserClient userClient;
+
+    @Produces
+    public GraphQL setup() {
+
+        LOGGER.info("Setting up GraphQL..");
+
+        SchemaParser schemaParser = new SchemaParser();
+        TypeDefinitionRegistry registry = schemaParser.parse(
+            new InputStreamReader(
+                Objects.requireNonNull(Thread.currentThread().getContextClassLoader()
+                    .getResourceAsStream("META-INF/resources/graphql.schema"))));
+
+        SchemaGenerator schemaGenerator = new SchemaGenerator();
+        GraphQLSchema graphQLSchema = schemaGenerator.makeExecutableSchema(registry, wirings());
+        return GraphQL.newGraphQL(graphQLSchema).build();
+    }
+
+    private RuntimeWiring wirings() {
+
+        LOGGER.info("Wiring queries..");
+
+        return RuntimeWiring.newRuntimeWiring()
+            .type("Query",
+                builder -> builder.dataFetcher("allUsers", new UserFetcher(userClient)))
+            .build();
+    }
+
+
+}
+```
+
+On the `getResourceAsStream()` will receive what is your graphql schema 
