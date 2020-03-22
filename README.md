@@ -303,5 +303,51 @@ on the key part you will call the class that will be used as client , `UserClien
 After this we just need to declare our client class:
 
 ```java
+@Path("/api")
+@RegisterRestClient
+public interface UserClient {
 
+    @GET
+    @Produces("application/json")
+    @Path("/")
+    Results getUsers();
+}
+
+```
+
+The results class will be a Helper for by pass the result from the randomuser API
+
+```java
+public class Results {
+
+    private List<User> results;
+    public Results() {}
+
+    public List<User> getResults() {
+        return results;
+    }
+
+    public void setResults(List<User> results) {
+        this.results = results;
+    }
+}
+```
+
+To test without GraphQL I create and resource with just a get:
+
+```java
+@Path("/users")
+public class UserResource {
+
+
+    @Inject
+    @RestClient
+    UserClient userClient;
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Results getAllCountries() {
+        return userClient.getUsers();
+    }
+}
 ```
